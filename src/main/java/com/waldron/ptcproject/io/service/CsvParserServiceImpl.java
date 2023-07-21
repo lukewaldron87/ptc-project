@@ -23,16 +23,21 @@ public class CsvParserServiceImpl implements CsvParserService{
 
     @Override
     public List<Task> readTasksFromCsv(){
-        List<Task> tasks = new ArrayList<>();
 
         // get file name from propertyFileReaderService.readPropertyFromFile
         String fileName = propertyFileReaderService.readPropertyFromFile(
                 CsvConstants.PROPERTY_FILE_NAME.toString(),
                 CsvConstants.PROPERTY_NAME.toString());
 
+        return readTasksFromFile(fileName);
+    }
+
+    private List<Task> readTasksFromFile(String fileName) {
+        List<Task> tasks = new ArrayList<>();
         // create io stream from csv file
         //todo how to mock this so not dependent on file
         try (BufferedReader br = getBufferedReaderFroFile(fileName)) {
+
             String line;
             while ((line = br.readLine()) != null) {
                 // parse lines with lineToTask
@@ -40,16 +45,23 @@ public class CsvParserServiceImpl implements CsvParserService{
                 // add lines to list
                 tasks.add(task);
             }
+
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        // return list
         return tasks;
     }
 
     private BufferedReader getBufferedReaderFroFile(String fileName) {
         InputStream resourceAsStream = this.getClass().getResourceAsStream(CsvConstants.RESOURCE_PATH + fileName);
         return new BufferedReader(new InputStreamReader(resourceAsStream));
+    }
+
+    @Override
+    public void appendToCsvFile() {
+
+        //use CsvUtil taskToLine
+
     }
 }

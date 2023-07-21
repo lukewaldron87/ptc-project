@@ -7,10 +7,10 @@ import java.util.List;
 
 public interface CsvParserService {
 
-    // read all lines
     List<Task> readTasksFromCsv();
 
-    //write list to csv
+    //todo write list to csv
+    void appendToCsvFile();
 
-    // read 1 line
+    //todo read 1 line
 }
