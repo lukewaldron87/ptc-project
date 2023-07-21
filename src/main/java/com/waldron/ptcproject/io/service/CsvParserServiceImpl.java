@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CsvParserServiceImpl implements CsvParserService{
@@ -33,29 +34,25 @@ public class CsvParserServiceImpl implements CsvParserService{
     }
 
     private List<Task> readTasksFromFile(String fileName) {
-        List<Task> tasks = new ArrayList<>();
-        // create io stream from csv file
-        //todo how to mock this so not dependent on file
+
+        // try-with-resources declare BufferedReader to be used in try black
         try (BufferedReader br = getBufferedReaderFroFile(fileName)) {
 
-            String line;
-            while ((line = br.readLine()) != null) {
-                // parse lines with lineToTask
-                Task task = CsvUtil.lineToTask(line);
-                // add lines to list
-                tasks.add(task);
-            }
-
+            return br.lines()
+                    .map(line -> CsvUtil.lineToTask(line))
+                    .collect(Collectors.toList());
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return tasks;
     }
 
+    //todo how to mock this so not dependent on file
     private BufferedReader getBufferedReaderFroFile(String fileName) {
+        // create io stream from csv file
         InputStream resourceAsStream = this.getClass().getResourceAsStream(CsvConstants.RESOURCE_PATH + fileName);
-        return new BufferedReader(new InputStreamReader(resourceAsStream));
+        InputStreamReader streamReader = new InputStreamReader(resourceAsStream);
+        return new BufferedReader(streamReader);
     }
 
     @Override

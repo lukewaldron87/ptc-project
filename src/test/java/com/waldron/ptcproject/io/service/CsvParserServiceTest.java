@@ -84,6 +84,27 @@ class CsvParserServiceTest {
         assertEquals(expectedPriority, taskList.get(taskListSize-1).getPriority());
     }
 
+    //todo move getBufferedReaderFroFile to public util and mock BufferedReader
+    /*@Test
+    public void readTasksFromCsv_shouldThrowRuntimeException_ifErrorReadingLines(){
+        String fileName = "tasks.csv";
+        when(propertyFileReaderService.readPropertyFromFile(
+                CsvConstants.PROPERTY_FILE_NAME.toString(),
+                CsvConstants.PROPERTY_NAME.toString())).thenReturn(fileName);
+
+        String expectedDescription = "description of task";
+        long expectedPriority = 1l;
+        Task expectedTask = Task.builder()
+                .description(expectedDescription)
+                .priority(expectedPriority).build();
+        when(CsvUtil.lineToTask(anyString())).thenReturn(expectedTask);
+
+
+        assertThrows(RuntimeException.class, () -> {
+            csvParser.readTasksFromCsv();
+        });
+    }*/
+
     @Test
     public void appendToCsvFile(){
 
