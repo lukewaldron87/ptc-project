@@ -1,19 +1,23 @@
-package com.waldron.ptcproject.io;
+package com.waldron.ptcproject.io.service;
 
+import com.waldron.ptcproject.io.service.PropertyFileReaderServiceImpl;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class PropertyFileReaderTest {
-    private PropertyFileReader propertyFileReader = new PropertyFileReader();
+class PropertyFileReaderServiceImplTest {
+
+    @Autowired
+    private PropertyFileReaderServiceImpl propertyFileReader;
 
     @Test
     public void readFile_shouldReturnString_whenApplicationFileExists(){
         String fileName = "application.properties";
         String propertyName = "file.name";
-        String expectedFileName = "events.csv";
+        String expectedFileName = "tasks.csv";
 
         String returnedFileName = propertyFileReader.readPropertyFromFile(fileName, propertyName);
 
