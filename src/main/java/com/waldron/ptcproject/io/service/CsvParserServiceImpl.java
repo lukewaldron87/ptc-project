@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -56,9 +57,26 @@ public class CsvParserServiceImpl implements CsvParserService{
     }
 
     @Override
-    public void appendToCsvFile() {
+    public void appendToCsvFile(List<Task> tasks, String pathToFile) {
 
-        //use CsvUtil taskToLine
+        //todo validate pathToFile
+
+        String fileName = propertyFileReaderService.readPropertyFromFile(
+                CsvConstants.PROPERTY_FILE_NAME.toString(),
+                CsvConstants.PROPERTY_NAME.toString());
+
+        try {
+            //todo move to static util so I can mock it
+            BufferedWriter writer = new BufferedWriter(new FileWriter(pathToFile+fileName, true));
+            for(Task task: tasks){
+                String line = CsvUtil.taskToLine(task);
+                writer.append(line);
+            }
+
+            writer.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 }

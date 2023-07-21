@@ -21,9 +21,16 @@ public class PtcProjectApplication {
 	public static void main(String[] args) {
 		ConfigurableApplicationContext applicationContext = SpringApplication.run(PtcProjectApplication.class, args);
 
-		/*CsvParserService csvParserService = applicationContext.getBean(CsvParserService.class);
+		readAndWriteFile(applicationContext);
+	}
+
+	private static void readAndWriteFile(ConfigurableApplicationContext applicationContext) {
+		CsvParserService csvParserService = applicationContext.getBean(CsvParserService.class);
+
 		List<Task> taskList = csvParserService.readTasksFromCsv();
-		taskList.stream().forEach(task -> logger.info(task.toString()));*/
+		taskList.stream().forEach(task -> logger.info(task.toString()));
+
+		csvParserService.appendToCsvFile(taskList, "C:\\Users\\Luke\\Documents\\PTC\\");
 	}
 
 }

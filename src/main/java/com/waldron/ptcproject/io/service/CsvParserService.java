@@ -10,7 +10,7 @@ public interface CsvParserService {
     List<Task> readTasksFromCsv();
 
     //todo write list to csv
-    void appendToCsvFile();
+    void appendToCsvFile(List<Task> tasks, String pathToFile);
 
     //todo read 1 line
 }
