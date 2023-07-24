@@ -6,5 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 public interface TaskService {
 
-    public Task updateTask(Long id, Task task);
+    Task updateTask(Long id, Task task);
+
+    Task saveTask(Task taskFromController);
 }

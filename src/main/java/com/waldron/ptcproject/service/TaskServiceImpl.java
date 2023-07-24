@@ -30,4 +30,9 @@ public class TaskServiceImpl implements TaskService{
 
         return task;
     }
+
+    @Override
+    public Task saveTask(Task taskFromController) {
+        return taskRepository.save(taskFromController);
+    }
 }

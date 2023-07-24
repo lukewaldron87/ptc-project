@@ -83,4 +83,29 @@ class TaskServiceImplTest {
 
     }
 
+    @Test
+    public void saveTask_shouldPassTaskToRepository(){
+
+        Task taskFromController = Task.builder().build();
+
+        taskService.saveTask(taskFromController);
+
+        ArgumentCaptor<Task> taskCaptor = ArgumentCaptor.forClass(Task.class);
+        verify(taskRepository).save(taskCaptor.capture());
+        assertEquals(taskFromController, taskCaptor.getValue());
+    }
+
+    @Test
+    public void saveTask_shouldReturnTaskFromRepository(){
+
+        Task taskFromController = Task.builder().build();
+
+        Task expectedTask = Task.builder().build();
+        when(taskRepository.save(taskFromController)).thenReturn(expectedTask);
+
+        Task returnedTask = taskService.saveTask(taskFromController);
+
+        assertEquals(expectedTask, returnedTask);
+    }
+
 }
