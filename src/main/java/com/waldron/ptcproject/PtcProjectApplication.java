@@ -4,6 +4,7 @@ import com.waldron.ptcproject.controller.LoggingController;
 import com.waldron.ptcproject.entity.Task;
 import com.waldron.ptcproject.io.service.CsvParserService;
 import com.waldron.ptcproject.io.service.CsvParserServiceImpl;
+import com.waldron.ptcproject.service.TaskService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,16 @@ public class PtcProjectApplication {
 		CsvParserService csvParserService = applicationContext.getBean(CsvParserService.class);
 
 		List<Task> taskList = csvParserService.readTasksFromCsv();
-		taskList.stream().forEach(task -> logger.info(task.toString()));
+
+		TaskService taskService = applicationContext.getBean(TaskService.class);
+		//save all
+		taskList.stream()
+				.forEach(task -> taskService.saveTask(task));
+
+		//get all and check they saved
+		taskService.getAllTask().stream()
+				.forEach(task -> logger.info(task.toString()));
+
 
 		csvParserService.appendToCsvFile(taskList, "C:\\Users\\Luke\\Documents\\PTC\\");
 	}
