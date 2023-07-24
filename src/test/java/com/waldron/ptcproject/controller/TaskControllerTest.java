@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.GsonBuilder;
 import com.waldron.ptcproject.entity.Task;
+import com.waldron.ptcproject.exception.TaskNotFoundException;
 import com.waldron.ptcproject.service.TaskService;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -84,7 +85,20 @@ class TaskControllerTest {
         assertEquals(expectedPriority, taskCaptor.getValue().getPriority());
     }
 
+    @Test
+    public void updateTask_shouldReturn404Exception_whenServiceReturnsTaskNotFoundException() throws Exception {
 
-    //todo update
+        long updateId = 1l;
+        Task updateTask = Task.builder().description("update task").priority(1l).build();
+        String json = new GsonBuilder().create().toJson(updateTask);
+
+        String expectedMessage = "message";
+        when(taskService.updateTask(anyLong(), any())).thenThrow(new TaskNotFoundException(expectedMessage));
+
+        mockMvc.perform(put(TASK_REQUEST_MAPPING + "/" +updateId)
+                        .contentType(MediaType.APPLICATION_JSON).content(json))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
 
 }

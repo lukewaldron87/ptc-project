@@ -17,12 +17,13 @@ public class TaskController {
     private TaskService taskService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody List<Task> getTasks(){
+    // @ResponseBody for return value is redundant as it is already in @RestController
+    public List<Task> getTasks(){
         return taskService.getAllTask();
     }
 
     @PutMapping("/{id}")
-    public @ResponseBody Task updateTask(@PathVariable Long id, @Valid @RequestBody Task task){
+    public Task updateTask(@PathVariable Long id, @Valid @RequestBody Task task){
         return taskService.updateTask(id, task);
     }
 }
