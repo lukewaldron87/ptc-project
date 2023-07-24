@@ -10,6 +10,8 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -106,6 +108,17 @@ class TaskServiceImplTest {
         Task returnedTask = taskService.saveTask(taskFromController);
 
         assertEquals(expectedTask, returnedTask);
+    }
+
+    @Test
+    public void getAllTask_shouldReturnListOfTasks_whenListReturnedFromRepository(){
+
+        List<Task> expectedTaskList = Arrays.asList(Task.builder().build(), Task.builder().build());
+        when(taskRepository.findAll()).thenReturn(expectedTaskList);
+
+        List<Task> returnedTaskList = taskService.getAllTask();
+
+        assertEquals(expectedTaskList, returnedTaskList);
     }
 
 }
