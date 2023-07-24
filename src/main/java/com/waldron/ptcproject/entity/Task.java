@@ -10,6 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 @Getter
+@Setter
 public class Task {
 
     @Id
