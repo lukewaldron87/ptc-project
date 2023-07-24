@@ -1,17 +1,28 @@
 package com.waldron.ptcproject.controller;
 
 import com.waldron.ptcproject.entity.Task;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import com.waldron.ptcproject.service.TaskService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 
+import java.util.List;
+
 @RestController
+@RequestMapping("/tasks")
 public class TaskController {
 
-    @PutMapping("/tasks/{id}")
+    @Autowired
+    private TaskService taskService;
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody List<Task> getTasks(){
+        return taskService.getAllTask();
+    }
+
+    @PutMapping("/{id}")
     public Task updateTask(@PathVariable Long id, @Valid @RequestBody Task task){
-        return null;
+        return taskService.updateTask(id, task);
     }
 }

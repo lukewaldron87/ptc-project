@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
 
 import java.util.List;
 
@@ -30,6 +31,13 @@ public class PtcProjectApplication {
 
 		List<Task> taskList = csvParserService.readTasksFromCsv();
 
+		saveTasks(applicationContext, taskList);
+
+
+		csvParserService.appendToCsvFile(taskList, "C:\\Users\\Luke\\Documents\\PTC\\");
+	}
+
+	private static void saveTasks(ConfigurableApplicationContext applicationContext, List<Task> taskList) {
 		TaskService taskService = applicationContext.getBean(TaskService.class);
 		//save all
 		taskList.stream()
@@ -38,9 +46,6 @@ public class PtcProjectApplication {
 		//get all and check they saved
 		taskService.getAllTask().stream()
 				.forEach(task -> logger.info(task.toString()));
-
-
-		csvParserService.appendToCsvFile(taskList, "C:\\Users\\Luke\\Documents\\PTC\\");
 	}
 
 }
